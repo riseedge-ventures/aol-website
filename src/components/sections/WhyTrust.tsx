@@ -1,31 +1,13 @@
+import { words } from "@/content/approved";
+import { Reveal } from "../interactive/Reveal";
 import { Icon, type IconName } from "../ui/Icon";
 import { SectionHeading } from "../ui/SectionHeading";
-import { Reveal } from "../interactive/Reveal";
-import {
-  COMPANY_REGISTRATION_NUMBER,
-  isPublicValue,
-  SUPPORTING_DOCUMENTS_STATEMENT,
-  TRADING_NAME,
-  XERO_PUBLIC_STATEMENT,
-} from "@/config/site";
 
 const TRUST_POINTS: Array<[IconName, string, string]> = [
-  [
-    "users",
-    "Professional Network",
-    "Qualified accountants, tax professionals, payroll specialists, and advisors working together to support your business.",
-  ],
-  [
-    "cloud",
-    "Modern Cloud Solutions",
-    "Leveraging Xero to provide secure, efficient, and real-time financial management.",
-  ],
-  ["target", "Client-Focused Approach", "Tailored solutions designed around your business goals."],
-  [
-    "award",
-    "Commitment to Excellence",
-    "Delivering reliable service with integrity, professionalism, and continuous improvement.",
-  ],
+  ["users", words(5, 6), words(5, 8)],
+  ["cloud", words(5, 12), words(5, 14)],
+  ["target", words(5, 19), words(5, 21)],
+  ["award", words(5, 26), words(5, 28)],
 ];
 
 export function WhyTrust() {
@@ -36,9 +18,9 @@ export function WhyTrust() {
           <SectionHeading
             id="trust-heading"
             align="center"
-            eyebrow="Why Businesses Trust Us"
-            title="Built on Trust. Driven by Results."
-            lead="Businesses choose AOL Accounting Academy SA because we combine technical expertise with a genuine commitment to helping our clients succeed."
+            eyebrow={words(5, 0)}
+            title={words(5, 1)}
+            lead={words(5, 2)}
           />
         </Reveal>
         <div className="trust-grid">
@@ -55,19 +37,7 @@ export function WhyTrust() {
           ))}
         </div>
 
-        <Reveal className="trust-company">
-          <div className="trust-company__inner">
-            {isPublicValue(COMPANY_REGISTRATION_NUMBER) ? (
-              <p>
-                <strong>{TRADING_NAME}</strong>
-                {" · Company registration number: "}
-                {COMPANY_REGISTRATION_NUMBER}
-              </p>
-            ) : null}
-            {isPublicValue(XERO_PUBLIC_STATEMENT) ? <p>{XERO_PUBLIC_STATEMENT}</p> : null}
-            {isPublicValue(SUPPORTING_DOCUMENTS_STATEMENT) ? <p>{SUPPORTING_DOCUMENTS_STATEMENT}</p> : null}
-          </div>
-        </Reveal>
+
       </div>
     </section>
   );

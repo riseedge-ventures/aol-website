@@ -1,13 +1,13 @@
 "use client";
 
+import { BRAND, TRADING_NAME } from "@/config/site";
+import { PRIMARY_NAV } from "@/lib/seo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import { Icon } from "../ui/Icon";
 import { openConsultation } from "./consultation-events";
-import { BRAND, TRADING_NAME } from "@/config/site";
-import { PRIMARY_NAV } from "@/lib/seo";
 
 export const NAV = PRIMARY_NAV;
 
@@ -42,7 +42,7 @@ export function Header() {
 
   const onBook = useCallback(() => {
     setMenuOpen(false);
-    openConsultation();
+    openConsultation("online");
   }, []);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export function Header() {
         <div className="container hdr__inner">
           <Link className="hdr__logo" href="/" aria-label={`${TRADING_NAME} — home`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={BRAND.logoFull} alt={TRADING_NAME} width={60} height={42} fetchPriority="high" />
+            <img src={BRAND.logoFull} alt={TRADING_NAME} width={70} height={64} fetchPriority="high" />
           </Link>
           <nav className="hdr__nav" aria-label="Primary">
             {NAV.map(([label, href]) => (
@@ -104,7 +104,7 @@ export function Header() {
           </nav>
           <div className="hdr__actions">
             <Button className="hdr__cta" size="sm" iconRight="arrow-right" onClick={onBook}>
-              Book a Free Consultation
+              Book a Free Online Consultation
             </Button>
             <Button className="hdr__cta-mobile" size="sm" onClick={onBook}>
               Book
@@ -135,7 +135,7 @@ export function Header() {
         >
           <div className="drawer__top">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={BRAND.logoFull} alt="" width={54} height={38} />
+            <img src={BRAND.logoFull} alt="" width={70} height={64} />
             <button className="modal__close" style={{ position: "static" }} aria-label="Close menu" onClick={closeMenu}>
               <Icon name="x" size={20} />
             </button>
@@ -148,7 +148,7 @@ export function Header() {
           ))}
           <div className="drawer__cta">
             <Button block iconRight="arrow-right" onClick={onBook}>
-              Book a Free Consultation
+              Book a Free Online Consultation
             </Button>
           </div>
         </div>

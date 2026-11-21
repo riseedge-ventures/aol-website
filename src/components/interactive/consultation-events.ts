@@ -3,6 +3,6 @@
 // the whole tree.
 export const OPEN_CONSULTATION_EVENT = "aol:open-consultation";
 
-export function openConsultation() {
-  window.dispatchEvent(new Event(OPEN_CONSULTATION_EVENT));
+export function openConsultation(consultationType?: string) {
+  window.dispatchEvent(new CustomEvent(OPEN_CONSULTATION_EVENT, { detail: { consultationType } }));
 }

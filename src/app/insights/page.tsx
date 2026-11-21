@@ -1,16 +1,13 @@
-import type { Metadata } from "next";
-import Link from "next/link";
 import { SiteChrome } from "@/components/layout/SiteChrome";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { BookButton } from "@/components/interactive/BookButton";
-import { Reveal } from "@/components/interactive/Reveal";
+import { ApprovedCopy } from "@/components/sections/ApprovedCopy";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
-import { INSIGHT_TOPICS, INSIGHTS_INTRO } from "@/content/insights";
+import { blocks, words } from "@/content/approved";
+import { INSIGHT_TOPICS } from "@/content/insights";
 import { canonicalUrl } from "@/lib/seo";
+import type { Metadata } from "next";
 
-const TITLE = "Insights & Resources | AOL Accounting Academy SA";
-const DESCRIPTION =
-  "Planned insight topics from AOL Accounting Academy SA on cash flow, tax season preparation, Xero cloud accounting and financial tips for growing businesses.";
+const TITLE = words(25, 0);
+const DESCRIPTION = words(25, 2);
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -23,51 +20,17 @@ export default function InsightsPage() {
   return (
     <SiteChrome>
       <article className="section section--white page-hero">
-        <div className="container legal__inner page-content">
-          <Breadcrumbs
-            items={[
-              { name: "Home", path: "/" },
-              { name: "Insights", path: "/insights/" },
-            ]}
-          />
-          <Reveal immediate>
-            <SectionHeading
-              as="h1"
-              id="insights-page-heading"
-              eyebrow="Insights"
-              title="Insights That Help Your Business Grow"
-              lead={INSIGHTS_INTRO}
-            />
-          </Reveal>
-
+        <div className="container page-content">
+          <Breadcrumbs items={[{ name: "Home", path: "/" }, { name: "Insights", path: "/insights/" }]} />
+          <ApprovedCopy content={blocks(25).slice(0, 47)} firstHeading="h1" />
           <ul className="insights-preview" style={{ marginTop: "2rem" }}>
-            {INSIGHT_TOPICS.map((topic, i) => (
-              <li key={topic.title} className="insights-preview__item">
-                <div className="insights-preview__row">
-                  <span className="insights-preview__mark" aria-hidden="true">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div>
-                    <span className="insights-preview__title">{topic.title}</span>
-                    <p className="insights-preview__blurb">{topic.blurb}</p>
-                    <p className="insights-preview__status">Planned resource topic — article not published yet</p>
-                  </div>
-                </div>
-              </li>
-            ))}
+            {INSIGHT_TOPICS.map((topic, i) => <li key={topic.title} className="insights-preview__item">
+              <div className="insights-preview__row"><span className="insights-preview__mark" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <div><p>{blocks(25)[47 + i * 3].text}</p><h3 className="insights-preview__title">{topic.title}</h3><p className="insights-preview__blurb">{topic.blurb}</p></div>
+              </div>
+            </li>)}
           </ul>
-
-          <div className="page-cta-row">
-            <BookButton size="lg" iconRight="arrow-right">
-              Book a Free Consultation
-            </BookButton>
-            <Link className="text-link" href="/services/">
-              Explore services
-            </Link>
-            <Link className="text-link" href="/contact/">
-              Contact
-            </Link>
-          </div>
+          <ApprovedCopy content={blocks(25).slice(65)} />
         </div>
       </article>
     </SiteChrome>

@@ -1,22 +1,13 @@
-import { ProcessStep } from "../ui/ProcessStep";
-import { SectionHeading } from "../ui/SectionHeading";
+import { words } from "@/content/approved";
 import { Reveal } from "../interactive/Reveal";
 import type { IconName } from "../ui/Icon";
+import { ProcessStep } from "../ui/ProcessStep";
+import { SectionHeading } from "../ui/SectionHeading";
 
 const STEPS: Array<[number, IconName, string, string]> = [
-  [1, "messages-square", "Consultation", "We begin by understanding your business, your challenges, and your financial goals."],
-  [
-    2,
-    "settings",
-    "Implementation",
-    "Our professionals manage your accounting, payroll, taxation, and compliance using efficient cloud-based systems.",
-  ],
-  [
-    3,
-    "trending-up",
-    "Growth & Ongoing Support",
-    "Receive reliable financial reports, strategic advice, and continuous support to help your business grow with confidence.",
-  ],
+  [1, "messages-square", words(30, 7), words(30, 9)],
+  [2, "settings", words(30, 12), words(30, 14)],
+  [3, "trending-up", words(30, 17), words(30, 19)],
 ];
 
 export function Process() {
@@ -27,8 +18,8 @@ export function Process() {
           <SectionHeading
             id="process-heading"
             align="center"
-            eyebrow="How We Work"
-            title="A Simple Process Designed Around Your Business"
+            eyebrow={words(30, 0)}
+            title={words(30, 1)}
           />
         </Reveal>
         <ol className="process__grid" aria-label="Our process">

@@ -1,20 +1,22 @@
+import { words } from "@/content/approved";
+import {
+BRAND,
+BUSINESS_HOURS,
+COMPANY_REGISTRATION_NUMBER,
+CONTACT_EMAIL,
+INDEXING_ENABLED,
+isPublicValue,
+OFFICIAL_SITE_URL,
+PHONE_E164,
+PHYSICAL_ADDRESS,
+REGISTERED_COMPANY_NAME,
+SITE_URL,
+TRADING_NAME,
+} from "@/config/site";
+import { canonicalOrigin, canonicalUrl } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
 import { Manrope, Spectral } from "next/font/google";
 import "./globals.css";
-import {
-  BRAND,
-  BUSINESS_HOURS,
-  COMPANY_REGISTRATION_NUMBER,
-  CONTACT_EMAIL,
-  INDEXING_ENABLED,
-  isPublicValue,
-  OFFICIAL_SITE_URL,
-  PHONE_E164,
-  PHYSICAL_ADDRESS,
-  SITE_URL,
-  TRADING_NAME,
-} from "@/config/site";
-import { canonicalOrigin, canonicalUrl } from "@/lib/seo";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -38,9 +40,9 @@ function buildJsonLd() {
     "@type": "AccountingService",
     "@id": `${origin}/#business`,
     name: TRADING_NAME,
-    legalName: TRADING_NAME,
+    legalName: REGISTERED_COMPANY_NAME,
     description:
-      "Accounting, taxation, payroll, cloud accounting and business advisory services for Durban and South African businesses.",
+      words(0, 2),
     url: `${origin}/`,
     image: `${origin}${BRAND.officeImage}`,
     logo: `${origin}${BRAND.logoFullPng}`,
@@ -75,6 +77,8 @@ function buildJsonLd() {
       "@type": "PostalAddress",
       streetAddress: "27 Bram Fischer Road",
       addressLocality: "Durban",
+      addressRegion: "KwaZulu-Natal",
+      postalCode: "4001",
       addressCountry: "ZA",
     };
   }
@@ -101,7 +105,7 @@ export const metadata: Metadata = {
     template: `%s | ${TRADING_NAME}`,
   },
   description:
-    "AOL Accounting Academy SA — modern accounting, taxation, payroll, compliance and business advisory for South African SMEs, start-ups and growing companies.",
+    words(0, 2),
   // Icons come from the file conventions in src/app/ (favicon.ico, icon.png, apple-icon.png):
   // square 1:1 images as required by Google Search. Do not point `icons` at the
   // non-square aol-mark.png — a non-square favicon makes Google fall back to a generic globe.
@@ -113,13 +117,13 @@ export const metadata: Metadata = {
     url: canonicalUrl("/"),
     siteName: TRADING_NAME,
     title: `${TRADING_NAME} — Accounting, Tax & Advisory`,
-    description: "Professional Accounting. Strategic Business Advice. Sustainable Growth.",
+    description: words(0, 1),
     images: [{ url: BRAND.heroPoster, width: 1200, height: 630, alt: TRADING_NAME }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${TRADING_NAME} — Accounting, Tax & Advisory`,
-    description: "Professional Accounting. Strategic Business Advice. Sustainable Growth.",
+    description: words(0, 1),
     images: [BRAND.heroPoster],
   },
 };

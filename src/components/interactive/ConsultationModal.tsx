@@ -1,17 +1,20 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
+import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_URL } from "@/config/site";
+import { NETLIFY_FORM_NAME, NETLIFY_HONEYPOT_FIELD } from "@/content/enquiry-form";
+import { SERVICES } from "@/content/services";
 import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "../ui/Button";
 import { Eyebrow } from "../ui/Eyebrow";
 import { Field } from "../ui/Field";
 import { Icon } from "../ui/Icon";
 import { OPEN_CONSULTATION_EVENT } from "./consultation-events";
-import { PHONE_DISPLAY, PHONE_HREF, TRADING_NAME, WHATSAPP_URL } from "@/config/site";
-import { SERVICES } from "@/content/services";
-import { NETLIFY_FORM_NAME, NETLIFY_HONEYPOT_FIELD } from "@/content/enquiry-form";
 
-const CM_SERVICES = ["Select a service…", ...SERVICES.map((s) => s.title), "Not sure yet"];
+const CM_SERVICES = [
+  ...SERVICES.map((s) => s.title),
+  "You do not need to know which accounting service applies to your circumstances before contacting us.",
+];
 const MODAL_HASH = "#consultation";
 const BODY_LOCK_CLASS = "aol-modal-open";
 
@@ -40,6 +43,7 @@ function clearModalHash() {
 export function ConsultationModal() {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
+  const [preferredType, setPreferredType] = useState("");
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -98,7 +102,11 @@ export function ConsultationModal() {
   }, []);
 
   useEffect(() => {
-    const handleOpenEvent = () => onOpen();
+    const handleOpenEvent = (event: Event) => {
+      const type = (event as CustomEvent<{ consultationType?: string }>).detail?.consultationType;
+      setPreferredType(type ?? "");
+      onOpen();
+    };
     window.addEventListener(OPEN_CONSULTATION_EVENT, handleOpenEvent);
     return () => window.removeEventListener(OPEN_CONSULTATION_EVENT, handleOpenEvent);
   }, [onOpen]);
@@ -186,6 +194,9 @@ export function ConsultationModal() {
     if (!name) next.name = "Full name is required.";
     if (!email) next.email = "Email is required.";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email address.";
+    if (!String(data.get("phone") ?? "").trim()) next.phone = "Contact number is required.";
+    if (!String(data.get("service") ?? "").trim()) next.service = "Area of assistance is required.";
+    if (!String(data.get("message") ?? "").trim()) next.message = "Tell us about your enquiry.";
     setFieldErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -203,8 +214,7 @@ export function ConsultationModal() {
     setSending(true);
     const data = new FormData(form);
     data.set("form-name", NETLIFY_FORM_NAME);
-    if (!data.get("marketing_consent")) data.set("marketing_consent", "no");
-    else data.set("marketing_consent", "yes");
+    data.set("marketing_consent", "no");
 
     const body = new URLSearchParams();
     data.forEach((value, key) => {
@@ -243,152 +253,134 @@ export function ConsultationModal() {
         </button>
 
         {/* Keep form mounted so open/close stays instant and never shows an empty overlay. */}
-        <div className="modal__head">
-          <Eyebrow>Free Consultation</Eyebrow>
-          <h2
-            id={titleId}
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 500,
-              fontSize: "var(--text-2xl)",
-              color: "var(--navy-900)",
-              letterSpacing: "var(--tracking-tight)",
-              margin: 0,
-            }}
-          >
-            Tell us about your business
-          </h2>
-          <p style={{ color: "var(--text-muted)", fontSize: "var(--text-base)" }}>
-            We collect this information to respond to your consultation request for {TRADING_NAME}. Required fields are
-            marked with an asterisk. See our{" "}
-            <a href="/privacy/" style={{ color: "var(--navy-900)", fontWeight: 600 }} onClick={dismiss}>
-              Privacy Notice
-            </a>
-            .
-          </p>
-        </div>
-        <form
-          className="modal__form"
-          name={NETLIFY_FORM_NAME}
-          method="POST"
-          {...NETLIFY_FORM_ATTRS}
-          onSubmit={submit}
-          noValidate
-        >
-          <input type="hidden" name="form-name" value={NETLIFY_FORM_NAME} />
-          <p className="netlify-honeypot" aria-hidden="true">
-            <label>
-              Do not fill this out if you are human
-              <input type="text" name={NETLIFY_HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" />
-            </label>
-          </p>
-          <Field label="Full name" htmlFor="cm-name" required error={fieldErrors.name}>
-            <div className="fld">
-              <Icon name="user" size={18} />
-              <input
-                id="cm-name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                placeholder="Thandi Mokoena"
-                required
-                aria-invalid={fieldErrors.name ? true : undefined}
-              />
+        <div className="modal__layout">
+          <aside className="modal__rail">
+            <div className="modal__head">
+              <Eyebrow>ENQUIRY FORM</Eyebrow>
+              <h2 id={titleId} className="modal__title">Tell Us What Your Business Needs.</h2>
+              <p>Provide your contact details and a brief description of the assistance you are seeking. This information will help our team understand the nature of your enquiry and determine the appropriate next steps.</p>
             </div>
-          </Field>
-          <Field label="Business name" htmlFor="cm-biz">
-            <div className="fld">
-              <Icon name="building-2" size={18} />
-              <input id="cm-biz" name="business" type="text" autoComplete="organization" placeholder="Your company" />
+            <div className="modal__contact" aria-label="AOL Accountants contact options">
+              <a href={PHONE_HREF}>
+                <Icon name="phone" size={18} />
+                <span>{PHONE_DISPLAY}</span>
+              </a>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                <Icon name="message-circle" size={18} />
+                <span>WhatsApp</span>
+              </a>
             </div>
-          </Field>
-          <Field label="Email" htmlFor="cm-email" required error={fieldErrors.email}>
-            <div className="fld">
-              <Icon name="mail" size={18} />
-              <input
-                id="cm-email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                placeholder="you@company.co.za"
-                required
-                aria-invalid={fieldErrors.email ? true : undefined}
-              />
-            </div>
-          </Field>
-          <Field label="Phone" htmlFor="cm-phone">
-            <div className="fld">
-              <Icon name="phone" size={18} />
-              <input id="cm-phone" name="phone" type="tel" autoComplete="tel" placeholder="071 234 5678" />
-            </div>
-          </Field>
-          <div className="full">
-            <Field label="Service needed" htmlFor="cm-svc">
-              <div className="fld fld--select">
-                <select id="cm-svc" name="service" defaultValue="Select a service…">
-                  {CM_SERVICES.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-                <Icon className="chev" name="chevron-down" size={18} />
-              </div>
-            </Field>
-          </div>
-          <div className="full">
-            <Field label="How can we help?" htmlFor="cm-msg">
-              <textarea
-                className="fld-textarea"
-                id="cm-msg"
-                name="message"
-                rows={3}
-                placeholder="A sentence or two about your business…"
-              ></textarea>
-            </Field>
-          </div>
-          <div className="full modal__consent">
-            <label className="modal__check">
-              <input type="checkbox" name="marketing_consent" value="yes" />
-              <span>
-                Optional: I would like to receive occasional business updates from {TRADING_NAME}. This is not required
-                to submit a consultation request.
-              </span>
-            </label>
-          </div>
-          {error ? (
-            <div className="full" id={errorId} role="alert" aria-live="assertive">
-              <p className="modal__form-error">{error}</p>
-            </div>
-          ) : null}
-          <div className="full">
-            <Button type="submit" block size="lg" iconRight="arrow-right" disabled={sending} aria-busy={sending}>
-              {sending ? "Sending…" : "Request my consultation"}
-            </Button>
-            <p
-              style={{
-                marginTop: "0.75rem",
-                textAlign: "center",
-                fontSize: "var(--text-sm)",
-                color: "var(--text-muted)",
-              }}
+          </aside>
+
+          <div className="modal__body">
+            <form
+              className="modal__form"
+              name={NETLIFY_FORM_NAME}
+              method="POST"
+              {...NETLIFY_FORM_ATTRS}
+              onSubmit={submit}
+              noValidate
             >
-              Prefer to talk?{" "}
-              <a href={PHONE_HREF} style={{ color: "var(--navy-900)", fontWeight: 600 }}>
-                {PHONE_DISPLAY}
-              </a>
-              {" · "}
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--navy-900)", fontWeight: 600 }}
-              >
-                WhatsApp
-              </a>
-            </p>
+              <input type="hidden" name="form-name" value={NETLIFY_FORM_NAME} />
+              <p className="netlify-honeypot" aria-hidden="true">
+                <label>
+                  Do not fill this out if you are human
+                  <input type="text" name={NETLIFY_HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" />
+                </label>
+              </p>
+
+              <section className="form-section" aria-labelledby="details-heading">
+                <div className="form-section__heading">
+                  <span className="form-section__icon" aria-hidden="true"><Icon name="user" size={20} /></span>
+                  <h3 id="details-heading">Your Details</h3>
+                </div>
+                <div className="form-section__grid form-section__grid--two">
+                  <Field label="Full Name" htmlFor="cm-name" required error={fieldErrors.name}>
+                    <div className="fld">
+                      <Icon name="user" size={18} />
+                      <input id="cm-name" name="name" type="text" autoComplete="name" required aria-invalid={fieldErrors.name ? true : undefined} />
+                    </div>
+                  </Field>
+                  <Field label="Email Address" htmlFor="cm-email" required error={fieldErrors.email}>
+                    <div className="fld">
+                      <Icon name="mail" size={18} />
+                      <input id="cm-email" name="email" type="email" autoComplete="email" required aria-invalid={fieldErrors.email ? true : undefined} />
+                    </div>
+                  </Field>
+                  <Field label="Contact Number" htmlFor="cm-phone" required error={fieldErrors.phone}>
+                    <div className="fld">
+                      <Icon name="phone" size={18} />
+                      <input id="cm-phone" name="phone" required aria-invalid={fieldErrors.phone ? true : undefined} type="tel" autoComplete="tel" />
+                    </div>
+                  </Field>
+                  <Field label="Business / Organisation Name (if applicable)" htmlFor="cm-biz">
+                    <div className="fld">
+                      <Icon name="building-2" size={18} />
+                      <input id="cm-biz" name="business" type="text" autoComplete="organization" />
+                    </div>
+                  </Field>
+                </div>
+              </section>
+
+              <section className="form-section" aria-labelledby="enquiry-heading">
+                <div className="form-section__heading">
+                  <span className="form-section__icon" aria-hidden="true"><Icon name="messages-square" size={20} /></span>
+                  <h3 id="enquiry-heading">Your Enquiry</h3>
+                </div>
+                <div className="form-section__grid">
+                  <Field label="Area of Assistance" htmlFor="cm-svc" required error={fieldErrors.service}>
+                    <div className="fld fld--select">
+                      <select id="cm-svc" name="service" required aria-invalid={fieldErrors.service ? true : undefined} defaultValue="">
+                        <option value="">Area of Assistance</option>
+                        {CM_SERVICES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                      <Icon className="chev" name="chevron-down" size={18} />
+                    </div>
+                  </Field>
+                  <Field label="Preferred Consultation Type" htmlFor="cm-type-online">
+                    <div className="consultation-choices" role="radiogroup" aria-label="Preferred Consultation Type">
+                      <label className={`consultation-choice ${preferredType === "online" ? "is-selected" : ""}`}>
+                        <input id="cm-type-online" type="radio" name="consultation_type" value="online" checked={preferredType === "online"} onChange={event => setPreferredType(event.target.value)} />
+                        <span className="consultation-choice__icon" aria-hidden="true"><Icon name="messages-square" size={21} /></span>
+                        <span className="consultation-choice__copy"><strong>Free Online Consultation</strong><span>Consultation Fee: Free</span></span>
+                        <span className="consultation-choice__indicator" aria-hidden="true" />
+                      </label>
+                      <label className={`consultation-choice ${preferredType === "office" ? "is-selected" : ""}`}>
+                        <input id="cm-type-office" type="radio" name="consultation_type" value="office" checked={preferredType === "office"} onChange={event => setPreferredType(event.target.value)} />
+                        <span className="consultation-choice__icon" aria-hidden="true"><Icon name="building-2" size={21} /></span>
+                        <span className="consultation-choice__copy"><strong>Office Consultation</strong><span>Consultation Fee: R300</span></span>
+                        <span className="consultation-choice__indicator" aria-hidden="true" />
+                      </label>
+                    </div>
+                  </Field>
+                  <Field label="Tell Us About Your Enquiry" htmlFor="cm-msg" required error={fieldErrors.message}>
+                    <textarea className="fld-textarea" id="cm-msg" name="message" required aria-invalid={fieldErrors.message ? true : undefined} rows={5}></textarea>
+                  </Field>
+                </div>
+              </section>
+
+              <input type="hidden" name="marketing_consent" value="no" />
+              {error ? <div id={errorId} role="alert" aria-live="assertive"><p className="modal__form-error">{error}</p></div> : null}
+
+              <div className="modal__submit">
+                <Button type="submit" block size="lg" iconRight="arrow-right" disabled={sending} aria-busy={sending}>
+                  {sending ? "Sending…" : "Submit Enquiry"}
+                </Button>
+                <p>Fields marked with an asterisk () are required.*</p>
+              </div>
+
+              <section className="modal__notice" aria-labelledby="before-submit-heading">
+                <div className="modal__notice-heading">
+                  <Icon name="shield-check" size={22} />
+                  <h3 id="before-submit-heading">BEFORE YOU SUBMIT</h3>
+                </div>
+                <p>Please provide a brief explanation of your enquiry so that we can understand the nature of the assistance you require.</p>
+                <p>For your security, do not include passwords, banking credentials, identity document numbers or other highly sensitive information in the enquiry form. Where supporting documentation is required, appropriate arrangements can be discussed separately.</p>
+                <p><strong>Submitting an enquiry does not constitute acceptance of a professional engagement. Any proposed services, applicable fees and engagement arrangements will be communicated separately.</strong></p>
+              </section>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

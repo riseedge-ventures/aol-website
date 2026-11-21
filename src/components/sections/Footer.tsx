@@ -1,23 +1,24 @@
+import {
+BRAND,
+BUSINESS_HOURS,
+CONTACT_EMAIL,
+isPublicValue,
+MAILTO_INFO,
+MAILTO_OFFICE,
+OFFICE_EMAIL,
+PHONE_DISPLAY,
+PHONE_HREF,
+PHYSICAL_ADDRESS,
+publicSocialLinks,
+SUPPORTING_DOCUMENTS_STATEMENT,
+TRADING_NAME,
+WHATSAPP_URL,
+} from "@/config/site";
+import { words } from "@/content/approved";
+import { servicePath, SERVICES } from "@/content/services";
+import { PRIMARY_NAV } from "@/lib/seo";
 import Link from "next/link";
 import { Icon } from "../ui/Icon";
-import {
-  BRAND,
-  BUSINESS_HOURS,
-  COMPANY_REGISTRATION_NUMBER,
-  CONTACT_EMAIL,
-  isPublicValue,
-  MAILTO_INFO,
-  MAILTO_OFFICE,
-  OFFICE_EMAIL,
-  PHONE_DISPLAY,
-  PHONE_HREF,
-  PHYSICAL_ADDRESS,
-  publicSocialLinks,
-  TRADING_NAME,
-  WHATSAPP_URL,
-} from "@/config/site";
-import { SERVICES, servicePath } from "@/content/services";
-import { PRIMARY_NAV } from "@/lib/seo";
 
 export function Footer() {
   const social = publicSocialLinks();
@@ -31,16 +32,12 @@ export function Footer() {
           <div className="ftr__brand">
             <Link className="chip" href="/" aria-label={`${TRADING_NAME} — home`}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={BRAND.logoFull} alt={TRADING_NAME} width={57} height={40} loading="lazy" />
+              <img src={BRAND.logoFull} alt={TRADING_NAME} width={98} height={90} loading="lazy" />
             </Link>
             <p>
-              AOL Accounting Academy SA is a modern accounting and business advisory firm that collaborates with a
-              network of qualified accountants, tax professionals, payroll specialists, financial consultants, and Xero
-              Certified Advisors dedicated to helping businesses achieve sustainable financial success.
+              {words(0, 3)}
             </p>
-            {isPublicValue(COMPANY_REGISTRATION_NUMBER) ? (
-              <p className="ftr__reg">Company registration number: {COMPANY_REGISTRATION_NUMBER}</p>
-            ) : null}
+            <p className="ftr__reg">{SUPPORTING_DOCUMENTS_STATEMENT}</p>
             {social.length > 0 ? (
               <div className="ftr__social">
                 {social.map((s) => (

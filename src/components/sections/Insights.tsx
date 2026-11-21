@@ -1,7 +1,7 @@
-import { SectionHeading } from "../ui/SectionHeading";
+import { INSIGHT_TOPICS } from "@/content/insights";
 import { Reveal } from "../interactive/Reveal";
 import { Button } from "../ui/Button";
-import { INSIGHT_TOPICS } from "@/content/insights";
+import { SectionHeading } from "../ui/SectionHeading";
 
 export function Insights() {
   return (
@@ -11,8 +11,8 @@ export function Insights() {
           <SectionHeading
             id="insights-heading"
             align="center"
-            eyebrow="Insights"
-            title="Insights That Help Your Business Grow"
+            eyebrow="AOL INSIGHTS"
+            title="The Numbers Behind Every Business Decision."
           />
         </Reveal>
         <ul className="insights-preview">
@@ -31,7 +31,7 @@ export function Insights() {
         </ul>
         <Reveal className="services__more">
           <Button href="/insights/" size="lg" variant="outline" iconRight="arrow-right">
-            View insights hub
+            AOL INSIGHTS
           </Button>
         </Reveal>
       </div>

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServiceLanding } from "@/components/sections/ServiceLanding";
+import { blocks } from "@/content/approved";
 import { SERVICES, getServiceBySlug, servicePath } from "@/content/services";
-import { TRADING_NAME } from "@/config/site";
 import { canonicalUrl } from "@/lib/seo";
 
 export const dynamicParams = false;
@@ -20,12 +20,13 @@ export async function generateMetadata({
   const service = getServiceBySlug(slug);
   if (!service) return {};
   const path = servicePath(service.slug);
+  const approvedTitle = blocks(service.approvedSection)[0].text;
   return {
-    title: `${service.title} in Durban`,
+    title: { absolute: approvedTitle },
     description: service.metaDescription,
     alternates: { canonical: canonicalUrl(path) },
     openGraph: {
-      title: `${service.title} | ${TRADING_NAME}`,
+      title: approvedTitle,
       description: service.metaDescription,
       url: canonicalUrl(path),
     },

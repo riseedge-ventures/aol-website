@@ -42,10 +42,10 @@ export const SITE_URL =
   env("NEXT_PUBLIC_SITE_URL") ?? (IS_PRODUCTION ? OFFICIAL_SITE_URL : PREVIEW_SITE_URL);
 
 export const REGISTERED_COMPANY_NAME = env("NEXT_PUBLIC_REGISTERED_COMPANY_NAME") ?? "AOL Accounting Academy SA";
-export const TRADING_NAME = env("NEXT_PUBLIC_TRADING_NAME") ?? "AOL Accounting Academy SA";
+export const TRADING_NAME = "AOL Accountants";
 
-export const COMPANY_REGISTRATION_NUMBER =
-  env("NEXT_PUBLIC_COMPANY_REGISTRATION_NUMBER") ?? "2025/645278/07";
+/** Company registration documents are supplied privately on request, not displayed publicly. */
+export const COMPANY_REGISTRATION_NUMBER = null;
 
 /** VAT number/status are optional and not shown publicly unless explicitly set. */
 export const VAT_NUMBER = env("NEXT_PUBLIC_VAT_NUMBER") ?? null;
@@ -53,8 +53,7 @@ export const VAT_STATUS = env("NEXT_PUBLIC_VAT_STATUS") ?? null;
 export const IS_VAT_REGISTERED = envBool("NEXT_PUBLIC_VAT_REGISTERED", false);
 
 /** Approved public website address only. */
-export const PHYSICAL_ADDRESS =
-  env("NEXT_PUBLIC_PHYSICAL_ADDRESS") ?? "27 Bram Fischer Road, Durban, South Africa";
+export const PHYSICAL_ADDRESS = "27 Bram Fischer Road, North Beach, Durban, 4001";
 
 export const POSTAL_ADDRESS = env("NEXT_PUBLIC_POSTAL_ADDRESS") ?? null;
 
@@ -65,7 +64,7 @@ export const PHONE_HREF = `tel:${PHONE_E164}`;
 export const WHATSAPP_NUMBER = env("NEXT_PUBLIC_WHATSAPP_NUMBER") ?? "27722067130";
 
 const DEFAULT_WHATSAPP_MESSAGE =
-  "Hello AOL Accounting Academy SA, I would like to enquire about your accounting and business advisory services.";
+  "Hello AOL Accountants, I would like to enquire about your accounting and business advisory services.";
 
 /** WhatsApp chat URL with a professional prefilled enquiry message. */
 export const WHATSAPP_URL =
@@ -132,7 +131,7 @@ export const XERO_PUBLIC_STATEMENT =
 /** Confirmed supporting-document statement. */
 export const SUPPORTING_DOCUMENTS_STATEMENT =
   env("NEXT_PUBLIC_SUPPORTING_DOCUMENTS_STATEMENT") ??
-  "Company registration, professional certification and supporting documents are available upon request.";
+  "All documents, including the company registration, are available upon request.";
 
 export const ANALYTICS_ID = env("NEXT_PUBLIC_ANALYTICS_ID") ?? null;
 
@@ -141,14 +140,14 @@ export const POLICY_EFFECTIVE_DATE = env("NEXT_PUBLIC_POLICY_EFFECTIVE_DATE") ??
 export const BRAND = {
   name: TRADING_NAME,
   shortName: "AOL",
-  tagline: "Professional Accounting. Strategic Business Advice. Sustainable Growth.",
-  logoFull: "/assets/logo/aol-logo-full.webp",
+  tagline: "Accounting Expertise. Financial Integrity. Business Confidence.",
+  logoFull: "/assets/logo/aol-logo-full-optimized.webp",
   logoFullPng: "/assets/logo/aol-logo-full.png",
   logoMark: "/assets/logo/aol-mark.webp",
   logoMarkPng: "/assets/logo/aol-mark.png",
   heroPoster: "/assets/media/aol-hero-poster.webp",
   heroVideo: "/assets/media/aol-hero.mp4",
-  officeImage: "/assets/media/aol-office.webp",
+  officeImage: "/assets/media/aol-office-stock-1600.webp",
 } as const;
 
 /** Render helper: skip null/empty/placeholder public values. */

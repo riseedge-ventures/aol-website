@@ -1,14 +1,14 @@
+import {
+SERVICES,
+SERVICES_SECTION_HEADING,
+SERVICES_SECTION_INTRO,
+SERVICES_VIEW_ALL_LABEL,
+servicePath,
+} from "@/content/services";
+import { Reveal } from "../interactive/Reveal";
 import { Button } from "../ui/Button";
 import { SectionHeading } from "../ui/SectionHeading";
 import { ServiceCard } from "../ui/ServiceCard";
-import { Reveal } from "../interactive/Reveal";
-import {
-  SERVICES,
-  SERVICES_SECTION_HEADING,
-  SERVICES_SECTION_INTRO,
-  SERVICES_VIEW_ALL_LABEL,
-  servicePath,
-} from "@/content/services";
 
 export function Services() {
   return (
@@ -29,9 +29,9 @@ export function Services() {
               <ServiceCard
                 icon={service.icon}
                 title={service.title}
-                description={service.description}
+                description={<><strong>{service.tagline}</strong><br />{service.description}</>}
                 href={servicePath(service.slug)}
-                linkLabel="Learn more"
+                linkLabel="Learn More"
               />
             </Reveal>
           ))}

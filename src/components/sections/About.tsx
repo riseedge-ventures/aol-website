@@ -1,7 +1,9 @@
-import { SectionHeading } from "../ui/SectionHeading";
+import { BRAND } from "@/config/site";
+import { blocks, words } from "@/content/approved";
 import { Reveal } from "../interactive/Reveal";
 import { Button } from "../ui/Button";
-import { BRAND } from "@/config/site";
+import { SectionHeading } from "../ui/SectionHeading";
+import { ApprovedCopy } from "./ApprovedCopy";
 
 export function About() {
   return (
@@ -12,9 +14,9 @@ export function About() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={BRAND.officeImage}
-              alt="Professional accounting workspace supporting AOL Accounting Academy SA advisory work"
-              width={960}
-              height={720}
+              alt="Professional accounting workspace supporting AOL Accountants advisory work"
+              width={1600}
+              height={1067}
               loading="lazy"
               decoding="async"
             />
@@ -24,25 +26,13 @@ export function About() {
         <Reveal delay="1">
           <SectionHeading
             id="about-heading"
-            eyebrow="About AOL"
-            title="More Than Accounting. A Trusted Business Partner."
+            eyebrow={words(1, 0)}
+            title={words(1, 1)}
           />
-          <div className="prose" style={{ marginTop: "1.35rem" }}>
-            <p>
-              At AOL Accounting Academy SA, we believe accounting should do more than satisfy compliance
-              requirements—it should provide the financial insight businesses need to make informed decisions and
-              achieve sustainable growth.
-            </p>
-            <p>
-              Our collaborative network of professionals combines academic excellence, practical industry experience,
-              and modern cloud accounting technology to deliver accurate financial information, strategic guidance, and
-              personalised support tailored to every client&apos;s goals.
-            </p>
-            <p>We are committed to building long-term relationships founded on professionalism, integrity, and measurable value.</p>
-          </div>
+          <ApprovedCopy content={blocks(1).slice(2, 5)} />
           <div style={{ marginTop: "1.25rem" }}>
             <Button href="/about/" variant="outline" iconRight="arrow-right">
-              About AOL
+              ABOUT US
             </Button>
           </div>
         </Reveal>

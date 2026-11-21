@@ -9,6 +9,7 @@ export const ENQUIRY_FIELD_NAMES = [
   "phone",
   "service",
   "message",
+  "consultation_type",
   "marketing_consent",
 ] as const;
 

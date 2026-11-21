@@ -1,27 +1,27 @@
-import type { Metadata } from "next";
-import { Header } from "@/components/interactive/Header";
+import { AnchorFocus } from "@/components/interactive/AnchorFocus";
 import { ConsultationModal } from "@/components/interactive/ConsultationModal";
+import { Header } from "@/components/interactive/Header";
 import { MobileActionBar } from "@/components/interactive/MobileActionBar";
 import { NetlifyFormsDetector } from "@/components/interactive/NetlifyFormsDetector";
-import { RevealRuntime, REVEAL_SCRIPT } from "@/components/interactive/RevealRuntime";
-import { Hero } from "@/components/sections/Hero";
+import { REVEAL_SCRIPT, RevealRuntime } from "@/components/interactive/RevealRuntime";
 import { About } from "@/components/sections/About";
-import { WhyChoose } from "@/components/sections/WhyChoose";
-import { Services } from "@/components/sections/Services";
-import { Industries } from "@/components/sections/Industries";
-import { WhyTrust } from "@/components/sections/WhyTrust";
-import { Pricing } from "@/components/sections/Pricing";
-import { Process } from "@/components/sections/Process";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Insights } from "@/components/sections/Insights";
 import { CTA } from "@/components/sections/CTA";
 import { Footer } from "@/components/sections/Footer";
-import { AnchorFocus } from "@/components/interactive/AnchorFocus";
+import { Hero } from "@/components/sections/Hero";
+import { Industries } from "@/components/sections/Industries";
+import { Insights } from "@/components/sections/Insights";
+import { Pricing } from "@/components/sections/Pricing";
+import { Process } from "@/components/sections/Process";
+import { Services } from "@/components/sections/Services";
+import { Testimonials } from "@/components/sections/Testimonials";
+import { WhyChoose } from "@/components/sections/WhyChoose";
+import { WhyTrust } from "@/components/sections/WhyTrust";
+import { words } from "@/content/approved";
 import { canonicalUrl } from "@/lib/seo";
+import type { Metadata } from "next";
 
-const TITLE = "Accountants in Durban | Tax, Bookkeeping & Advisory | AOL";
-const DESCRIPTION =
-  "AOL Accounting Academy SA provides bookkeeping, tax, payroll, financial statements and business advisory services for Durban and South African SMEs.";
+const TITLE = words(0, 0);
+const DESCRIPTION = words(0, 2);
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },

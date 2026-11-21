@@ -1,8 +1,8 @@
-import { IndustryTag } from "../ui/IndustryTag";
-import { SectionHeading } from "../ui/SectionHeading";
+import { INDUSTRIES, INDUSTRIES_HEADING, INDUSTRIES_INTRO } from "@/content/industries";
 import { Reveal } from "../interactive/Reveal";
 import { Button } from "../ui/Button";
-import { INDUSTRIES, INDUSTRIES_HEADING, INDUSTRIES_INTRO } from "@/content/industries";
+import { IndustryTag } from "../ui/IndustryTag";
+import { SectionHeading } from "../ui/SectionHeading";
 
 export function Industries() {
   return (
@@ -29,7 +29,7 @@ export function Industries() {
         </ul>
         <Reveal className="services__more">
           <Button href="/industries/" size="lg" variant="outline" onDark iconRight="arrow-right">
-            View industries
+            INDUSTRIES WE SERVE
           </Button>
         </Reveal>
       </div>

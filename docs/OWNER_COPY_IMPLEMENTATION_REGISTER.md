@@ -1,3 +1,5 @@
+> Superseded by `APPROVED_COPY_BLUEPRINT.md` and `APPROVED_COPY_VERIFICATION.md` for the owner PDF supplied 20 November 2026. Historical register below.
+
 # Owner Copy Implementation Register
 
 Inventory of visible website sections before and after applying locked owner-approved public copy.

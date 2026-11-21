@@ -1,7 +1,7 @@
-import { Button } from "../ui/Button";
+import { BRAND } from "@/config/site";
+import { words } from "@/content/approved";
 import { BookButton } from "../interactive/BookButton";
 import { Reveal } from "../interactive/Reveal";
-import { BRAND } from "@/config/site";
 
 export function CTA() {
   return (
@@ -12,19 +12,18 @@ export function CTA() {
           <img className="ctaband__mark" src={BRAND.logoMark} alt="" aria-hidden="true" loading="lazy" width={260} height={260} />
           <div className="ctaband__inner">
             <h2 id="cta-heading" className="ctaband__title">
-              Ready to Strengthen Your Business Finances?
+              {words(30, 24)}
             </h2>
             <p className="ctaband__lead">
-              Partner with AOL Accounting Academy SA and gain access to professional accounting, taxation, payroll, and
-              business advisory services designed to help your business grow with confidence.
+              {words(30, 25)}
             </p>
             <div className="ctaband__cta">
               <BookButton size="lg" iconRight="arrow-right">
-                Book a Free Consultation
+                Submit an Enquiry
               </BookButton>
-              <Button size="lg" variant="outline" onDark href="/contact/">
-                Contact Our Team
-              </Button>
+              <BookButton size="lg" variant="outline" onDark>
+                Book a Free Online Consultation
+              </BookButton>
             </div>
           </div>
         </Reveal>

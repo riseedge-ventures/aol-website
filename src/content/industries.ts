@@ -7,17 +7,30 @@ export type IndustryItem = {
 
 /** Owner-approved industry list — hub page only; no thin doorway pages. */
 export const INDUSTRIES: IndustryItem[] = [
-  { icon: "building-2", label: "Small & Medium Enterprises (SMEs)" },
-  { icon: "rocket", label: "Start-ups" },
-  { icon: "store", label: "Retail & Wholesale" },
-  { icon: "hard-hat", label: "Construction" },
-  { icon: "bus", label: "Transport & Taxi Industry" },
-  { icon: "utensils", label: "Hospitality" },
-  { icon: "briefcase", label: "Professional Services" },
-  { icon: "school", label: "Educational Institutions" },
-  { icon: "heart-handshake", label: "Non-Profit Organisations" },
+  {
+    "icon": "building-2",
+    "label": "SMEs & Owner-Managed Businesses"
+  },
+  {
+    "icon": "rocket",
+    "label": "Start-ups & Entrepreneurs"
+  },
+  {
+    "icon": "settings",
+    "label": "Manufacturing"
+  },
+  {
+    "icon": "hard-hat",
+    "label": "Construction"
+  },
+  {
+    "icon": "briefcase",
+    "label": "Professional Services"
+  },
+  {
+    "icon": "heart-handshake",
+    "label": "Healthcare & Medical Practices"
+  }
 ];
-
-export const INDUSTRIES_HEADING = "Supporting Businesses Across Diverse Industries";
-export const INDUSTRIES_INTRO =
-  "We proudly provide professional accounting and advisory services to organisations operating in a wide range of industries.";
+export const INDUSTRIES_HEADING = "INDUSTRIES WE SERVE";
+export const INDUSTRIES_INTRO = "Behind Every Business Owner Is a Business That Must Make Financial Sense.";

@@ -30,7 +30,7 @@ export function HeroVideo() {
       muted
       playsInline
       preload="metadata"
-      aria-label="Accounting and advisory work environment for AOL Accounting Academy SA"
+      aria-label="Accounting and advisory work environment for AOL Accountants"
     />
   );
 }

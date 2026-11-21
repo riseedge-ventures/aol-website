@@ -1,29 +1,14 @@
-import { FeatureCard } from "../ui/FeatureCard";
-import { SectionHeading } from "../ui/SectionHeading";
+import { words } from "@/content/approved";
 import { Reveal } from "../interactive/Reveal";
+import { FeatureCard } from "../ui/FeatureCard";
 import type { IconName } from "../ui/Icon";
+import { SectionHeading } from "../ui/SectionHeading";
 
 const WHY_ITEMS: Array<[IconName, string, string]> = [
-  [
-    "award",
-    "Qualified Professionals",
-    "Work with experienced accounting, payroll, taxation, and advisory professionals committed to delivering high-quality financial services.",
-  ],
-  [
-    "cloud",
-    "Modern Cloud Technology",
-    "Using Xero and other leading cloud accounting solutions, we provide secure, accurate, and real-time financial information.",
-  ],
-  [
-    "sliders-horizontal",
-    "Tailored Business Solutions",
-    "Every business is unique. Our services are customised to suit your industry, objectives, and stage of growth.",
-  ],
-  [
-    "heart-handshake",
-    "Long-Term Partnership",
-    "We work alongside our clients, providing continuous support that extends beyond compliance to help them achieve lasting business success.",
-  ],
+  ["award", words(4, 6), words(4, 8)],
+  ["cloud", words(4, 12), words(4, 14)],
+  ["sliders-horizontal", words(4, 19), words(4, 21)],
+  ["heart-handshake", words(4, 26), words(4, 28)],
 ];
 
 export function WhyChoose() {
@@ -34,9 +19,9 @@ export function WhyChoose() {
           <SectionHeading
             id="why-heading"
             align="center"
-            eyebrow="Why Choose AOL"
-            title="Why Businesses Choose AOL Accounting Academy SA"
-            lead="Instead of simply preparing financial records, we help businesses build stronger financial foundations through modern accounting solutions and practical business advice."
+            eyebrow={words(4, 0)}
+            title={words(4, 1)}
+            lead={words(4, 2)}
           />
         </Reveal>
         <div className="grid grid--4">
