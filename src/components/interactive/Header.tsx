@@ -6,7 +6,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import { Icon } from "../ui/Icon";
 import { openConsultation } from "./consultation-events";
-import { BRAND, TRADING_NAME } from "@/config/site";
+import { BRAND, PORTAL_LOGIN_URL, TRADING_NAME } from "@/config/site";
 import { PRIMARY_NAV } from "@/lib/seo";
 
 export const NAV = PRIMARY_NAV;
@@ -103,6 +103,9 @@ export function Header() {
             ))}
           </nav>
           <div className="hdr__actions">
+            <Button className="hdr__portal" variant="outline" size="sm" iconLeft="shield-check" href={PORTAL_LOGIN_URL} aria-label="Client Portal" title="Client Portal">
+              <span className="hdr__portal-text">Client Portal</span>
+            </Button>
             <Button className="hdr__cta" size="sm" iconRight="arrow-right" onClick={onBook}>
               Book a Free Consultation
             </Button>
@@ -146,6 +149,13 @@ export function Header() {
               <Icon name="chevron-right" size={18} />
             </Link>
           ))}
+          <a className="drawer__link drawer__link--portal" href={PORTAL_LOGIN_URL} onClick={closeMenu}>
+            <span className="drawer__portal-label">
+              <Icon name="shield-check" size={18} />
+              Client Portal
+            </span>
+            <Icon name="chevron-right" size={18} />
+          </a>
           <div className="drawer__cta">
             <Button block iconRight="arrow-right" onClick={onBook}>
               Book a Free Consultation

@@ -1174,3 +1174,19 @@ body:has(.modal.open) .mab { visibility: hidden; pointer-events: none; }
 .trust-company__inner strong { color: var(--navy-900); }
 .ftr__reg { font-size: var(--text-sm); color: var(--text-on-navy-faint); margin: 0; line-height: 1.45; }
 
+
+/* Client Portal entry point (links to the separate secure portal application) */
+.hdr .hdr__portal { display: none; }
+.drawer__link--portal { color: var(--brand-primary); }
+.drawer__portal-label { display: inline-flex; align-items: center; gap: .55rem; }
+/* Shown from 1024px: between 900px and 1023px the existing header has no spare room
+   (the live CTA already clips at 900px), so the portal stays in the footer there. */
+@media (min-width: 1024px) {
+  .hdr .hdr__portal { display: inline-flex; }
+  .hdr .hdr__portal-text { display: none; }
+  .hdr .hdr__portal { padding-inline: .6rem; }
+}
+@media (min-width: 1280px) {
+  .hdr .hdr__portal-text { display: inline; }
+  .hdr .hdr__portal { padding-inline: revert-layer; }
+}
