@@ -31,10 +31,25 @@ export function secureEqual(left, right) {
   return timingSafeEqual(a, b);
 }
 
-export function verifyWebhookSignature(rawBody, signature, secret) {
+export function verifyLegacyWebhookSignature(rawBody, signature, secret) {
   if (!secret || !signature) return false;
   const expected = createHmac("sha512", secret).update(rawBody).digest("hex");
   return secureEqual(expected, signature);
+}
+
+export function verifyWebhookSignature(rawBody, signature, secret, nowSeconds = Math.floor(Date.now() / 1_000)) {
+  if (!secret || !signature) return false;
+
+  const fields = String(signature).split(",");
+  const timestamp = Number(fields.find((field) => field.startsWith("t="))?.slice(2));
+  const signatures = fields
+    .filter((field) => field.startsWith("v1="))
+    .map((field) => field.slice(3).split(":", 2)[1])
+    .filter(Boolean);
+
+  if (!Number.isSafeInteger(timestamp) || Math.abs(nowSeconds - timestamp) > 300 || signatures.length === 0) return false;
+  const expected = createHmac("sha512", secret).update(`${timestamp}.${rawBody}`).digest("hex");
+  return signatures.some((candidate) => secureEqual(expected, candidate));
 }
 
 export function paymentReference(prefix) {

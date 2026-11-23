@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import officePayment from "../netlify/functions/paystack-office-payment.mjs";
 import subscriptionConfig from "../netlify/functions/paystack-subscription-config.mjs";
 import webhook from "../netlify/functions/paystack-webhook.mjs";
+import { createHmac } from "node:crypto";
 import { nextFirstOfMonthIso } from "../netlify/functions/_shared/paystack.mjs";
 
 const originalFetch = globalThis.fetch;
@@ -82,6 +83,42 @@ test("webhook rejects an unsigned payload", async () => {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ event: "charge.success", data: {} }),
+  }));
+  assert.equal(response.status, 401);
+});
+
+test("webhook accepts Paystack's current timestamped signature", async () => {
+  const rawBody = JSON.stringify({ event: "charge.success", data: {} });
+  const timestamp = Math.floor(Date.now() / 1_000);
+  process.env.PAYSTACK_WEBHOOK_SECRET = "whsec_not_a_real_secret";
+  const digest = createHmac("sha512", process.env.PAYSTACK_WEBHOOK_SECRET)
+    .update(`${timestamp}.${rawBody}`)
+    .digest("hex");
+  globalThis.fetch = async () => new Response("", { status: 200 });
+
+  const response = await webhook(new Request("https://aolaccountants.co.za/.netlify/functions/paystack-webhook", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "paystack-signature": `t=${timestamp},v1=whk_test:${digest}`,
+    },
+    body: rawBody,
+  }));
+  assert.equal(response.status, 200);
+});
+
+test("webhook rejects a valid signature older than five minutes", async () => {
+  const rawBody = JSON.stringify({ event: "charge.success", data: {} });
+  const timestamp = Math.floor(Date.now() / 1_000) - 301;
+  process.env.PAYSTACK_WEBHOOK_SECRET = "whsec_not_a_real_secret";
+  const digest = createHmac("sha512", process.env.PAYSTACK_WEBHOOK_SECRET)
+    .update(`${timestamp}.${rawBody}`)
+    .digest("hex");
+
+  const response = await webhook(new Request("https://aolaccountants.co.za/.netlify/functions/paystack-webhook", {
+    method: "POST",
+    headers: { "paystack-signature": `t=${timestamp},v1=whk_test:${digest}` },
+    body: rawBody,
   }));
   assert.equal(response.status, 401);
 });

@@ -43,6 +43,7 @@ Set these as Netlify environment variables, never in Git or client-side code:
 
 - `PAYSTACK_SECRET_KEY`
 - `PAYSTACK_PUBLIC_KEY`
+- `PAYSTACK_WEBHOOK_SECRET`
 - `AOL_EXISTING_CLIENT_EMAIL`
 - `AOL_EXISTING_CLIENT_MONTHLY_AMOUNT_CENTS`
 - `AOL_SUBSCRIPTION_INVITE_CODE`
@@ -52,6 +53,7 @@ Configure the Paystack webhook URL as:
 `https://aolaccountants.co.za/.netlify/functions/paystack-webhook`
 
 Subscribe at minimum to successful charges, subscription lifecycle, invoice creation/update/failure and expiring-card events.
+The webhook handler validates Paystack's current timestamped `Paystack-Signature` with `PAYSTACK_WEBHOOK_SECRET`, rejects signatures older than five minutes, and keeps the deprecated `X-Paystack-Signature` check only as a transition fallback.
 
 ## Go-live gate
 

@@ -3,6 +3,7 @@ import {
   cleanText,
   json,
   recordPaymentEvent,
+  verifyLegacyWebhookSignature,
   verifyWebhookSignature,
 } from "./_shared/paystack.mjs";
 
@@ -20,9 +21,13 @@ const TRACKED_EVENTS = new Set([
 export default async (request) => {
   if (request.method !== "POST") return json(405, { ok: false });
   const rawBody = await request.text();
-  const secret = process.env.PAYSTACK_SECRET_KEY || "";
-  const signature = request.headers.get("x-paystack-signature") || "";
-  if (!verifyWebhookSignature(rawBody, signature, secret)) return json(401, { ok: false });
+  const signingSecret = process.env.PAYSTACK_WEBHOOK_SECRET || "";
+  const currentSignature = request.headers.get("paystack-signature") || "";
+  const legacySecret = process.env.PAYSTACK_SECRET_KEY || "";
+  const legacySignature = request.headers.get("x-paystack-signature") || "";
+  const validCurrent = verifyWebhookSignature(rawBody, currentSignature, signingSecret);
+  const validLegacy = verifyLegacyWebhookSignature(rawBody, legacySignature, legacySecret);
+  if (!validCurrent && !validLegacy) return json(401, { ok: false });
 
   let payload;
   try {
