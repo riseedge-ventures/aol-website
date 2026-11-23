@@ -222,6 +222,29 @@ export function ConsultationModal() {
     });
 
     try {
+      let officeCheckoutUrl = "";
+      let paymentSetupUnavailable = false;
+      if (preferredType === "office") {
+        try {
+          const paymentResponse = await fetch("/.netlify/functions/paystack-office-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name: String(data.get("name") ?? ""),
+              email: String(data.get("email") ?? ""),
+              phone: String(data.get("phone") ?? ""),
+              business: String(data.get("business") ?? ""),
+              service: String(data.get("service") ?? ""),
+            }),
+          });
+          const payment = await paymentResponse.json().catch(() => null);
+          if (!paymentResponse.ok || !payment?.authorizationUrl) paymentSetupUnavailable = true;
+          else officeCheckoutUrl = String(payment.authorizationUrl);
+        } catch {
+          paymentSetupUnavailable = true;
+        }
+      }
+
       const res = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -229,7 +252,11 @@ export function ConsultationModal() {
       });
       if (!res.ok) throw new Error(`Netlify Forms POST failed: ${res.status}`);
       dismiss();
-      window.location.assign("/thank-you/");
+      if (officeCheckoutUrl) {
+        window.location.assign(officeCheckoutUrl);
+        return;
+      }
+      window.location.assign(paymentSetupUnavailable ? "/thank-you/?payment=pending" : "/thank-you/");
     } catch {
       setError(
         "Something went wrong sending your request. Please try again, call us, or message us on WhatsApp."
@@ -352,6 +379,9 @@ export function ConsultationModal() {
                         <span className="consultation-choice__indicator" aria-hidden="true" />
                       </label>
                     </div>
+                    <p className="consultation-payment-note">
+                      Office consultations require full payment before confirmation. The R300 fee is non-refundable. One rescheduling request is permitted when at least 24 hours&apos; notice is provided.
+                    </p>
                   </Field>
                   <Field label="Tell Us About Your Enquiry" htmlFor="cm-msg" required error={fieldErrors.message}>
                     <textarea className="fld-textarea" id="cm-msg" name="message" required aria-invalid={fieldErrors.message ? true : undefined} rows={5}></textarea>

@@ -859,6 +859,59 @@ a.aol-industrytag,.aol-industrytag--link{cursor:pointer}
 .modal__check { display: flex; gap: .7rem; align-items: flex-start; font-size: var(--text-sm); color: var(--text-body); line-height: 1.45; }
 .modal__check input { margin-top: .2rem; width: 1.1rem; height: 1.1rem; flex: 0 0 auto; accent-color: var(--brand-primary); }
 .modal__form-error { margin: 0; color: var(--danger); background: var(--danger-bg); border: 1px solid rgba(192,57,43,.25); border-radius: var(--radius-sm); padding: .75rem .9rem; font-size: var(--text-sm); }
+.consultation-payment-note { margin: .75rem 0 0; color: var(--text-muted); font-size: .82rem; line-height: 1.55; }
+
+/* ---- Secure payments and private client billing ---- */
+.payment-page, .billing-page { min-height: 72vh; display: grid; align-items: center; }
+.payment-page__inner, .billing-page__inner { width: 100%; max-width: 760px; }
+.payment-result, .billing-card {
+  width: 100%; padding: clamp(1.25rem, 4vw, 2.4rem); background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
+}
+.payment-result { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; }
+.payment-result__icon, .billing-card__icon {
+  display: inline-flex; align-items: center; justify-content: center; width: 58px; height: 58px;
+  border-radius: 16px; background: var(--blue-50); color: var(--brand-primary);
+}
+.payment-result--checking .payment-result__icon .aol-icon { animation: payment-spin 1s linear infinite; }
+.payment-result--error .payment-result__icon { background: var(--danger-bg); color: var(--danger); }
+.payment-result h1, .billing-card h1 { margin: 0; color: var(--navy-900); font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.12; }
+.payment-result p { margin: 0; color: var(--text-body); line-height: 1.65; }
+.payment-result__actions { margin-top: .5rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .75rem; }
+.payment-result__actions .text-link { padding: .65rem; }
+.billing-card { display: flex; flex-direction: column; gap: 1.25rem; }
+.billing-card__heading { display: flex; align-items: center; gap: 1rem; }
+.billing-card__heading > div { min-width: 0; }
+.billing-card__eyebrow { margin: 0 0 .25rem; color: var(--brand-primary); font-size: .75rem; font-weight: 800; letter-spacing: .11em; }
+.billing-form { display: grid; grid-template-columns: 1fr; gap: .55rem; }
+.billing-form label { margin-top: .45rem; color: var(--navy-900); font-size: .9rem; font-weight: 700; }
+.billing-form input {
+  width: 100%; min-height: 52px; padding: .75rem .9rem; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); background: #fff; color: var(--navy-900); font: inherit;
+}
+.billing-form input:focus { outline: 0; border-color: var(--brand-primary); box-shadow: var(--ring-focus); }
+.billing-form .aol-btn { margin-top: .8rem; }
+.billing-summary { display: grid; gap: .8rem; }
+.billing-summary > div { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--slate-50); }
+.billing-summary > div span { color: var(--text-muted); }
+.billing-summary > div strong { color: var(--navy-900); text-align: right; }
+.billing-summary p { margin: .3rem 0; color: var(--text-body); font-size: .9rem; line-height: 1.6; }
+.billing-summary__back { justify-self: center; border: 0; background: transparent; cursor: pointer; }
+.billing-card__security { margin: 0; display: flex; align-items: flex-start; gap: .5rem; color: var(--text-muted); font-size: .8rem; line-height: 1.5; }
+.billing-card__security .aol-icon { flex: 0 0 auto; margin-top: .1rem; color: var(--success); }
+.payment-fallback-notice { margin: 1rem auto 1.25rem; display: grid; gap: .35rem; max-width: 620px; padding: 1rem 1.1rem; border: 1px solid rgba(180,113,11,.25); border-radius: var(--radius-md); background: #fff8e8; color: var(--navy-900); text-align: left; }
+.payment-fallback-notice span { color: var(--text-body); font-size: .9rem; line-height: 1.55; }
+@keyframes payment-spin { to { transform: rotate(360deg); } }
+@media (max-width: 559px) {
+  .payment-page, .billing-page { align-items: start; }
+  .payment-result__actions { width: 100%; flex-direction: column; }
+  .payment-result__actions .aol-btn, .payment-result__actions .text-link { width: 100%; justify-content: center; }
+  .billing-card__heading { align-items: flex-start; }
+  .billing-card__icon { width: 48px; height: 48px; border-radius: 13px; }
+  .billing-summary > div { flex-direction: column; gap: .25rem; }
+  .billing-summary > div strong { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .payment-result--checking .payment-result__icon .aol-icon { animation: none; } }
 
 /* Netlify Forms: detection form + honeypot — never shown or focused for visitors */
 .netlify-form-detector {

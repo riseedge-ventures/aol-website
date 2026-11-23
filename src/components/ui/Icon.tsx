@@ -1,11 +1,11 @@
 import type { CSSProperties } from "react";
 import {
   ArrowRight, Award, BadgeCheck, Banknote, BarChart3, Briefcase, Building2, Bus,
-  Calculator, Calendar, Check, ChevronDown, ChevronRight, Clock, Cloud, Compass,
+  Calculator, Calendar, Check, ChevronDown, ChevronRight, Clock, Cloud, Compass, CreditCard,
   Facebook, FileCheck2, FileText, GraduationCap, HardHat, HeartHandshake, Instagram,
   Landmark, Layers, Lightbulb, Linkedin, Mail, MapPin, Menu, MessageCircle,
   MessagesSquare, Phone, Puzzle, Receipt, Rocket, School, Settings, ShieldCheck,
-  SlidersHorizontal, Store, Target, TrendingUp, Twitter, User, Users, Utensils, X,
+  LoaderCircle, ShieldAlert, SlidersHorizontal, Store, Target, TrendingUp, Twitter, User, Users, Utensils, X,
 } from "lucide-react";
 
 // Kebab-case Lucide names (as used throughout the design handoff) → components.
@@ -26,6 +26,7 @@ const ICONS = {
   clock: Clock,
   cloud: Cloud,
   compass: Compass,
+  "credit-card": CreditCard,
   facebook: Facebook,
   "file-check-2": FileCheck2,
   "file-text": FileText,
@@ -37,6 +38,7 @@ const ICONS = {
   layers: Layers,
   lightbulb: Lightbulb,
   linkedin: Linkedin,
+  "loader-circle": LoaderCircle,
   mail: Mail,
   "map-pin": MapPin,
   menu: Menu,
@@ -49,6 +51,7 @@ const ICONS = {
   school: School,
   settings: Settings,
   "shield-check": ShieldCheck,
+  "shield-alert": ShieldAlert,
   "sliders-horizontal": SlidersHorizontal,
   store: Store,
   target: Target,

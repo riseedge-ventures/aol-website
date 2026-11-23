@@ -3,6 +3,7 @@ import { SiteChrome } from "@/components/layout/SiteChrome";
 import { Button } from "@/components/ui/Button";
 import { PHONE_DISPLAY, PHONE_HREF, TRADING_NAME, WHATSAPP_URL } from "@/config/site";
 import { canonicalUrl } from "@/lib/seo";
+import { ThankYouPaymentNotice } from "@/components/interactive/ThankYouPaymentNotice";
 
 export const metadata: Metadata = {
   title: "Thank you",
@@ -17,6 +18,7 @@ export default function ThankYouPage() {
       <section className="section section--white">
         <div className="container legal__inner" style={{ textAlign: "center" }}>
           <h1>Thank you</h1>
+          <ThankYouPaymentNotice />
           <p>
             Your consultation request has been received. A member of the {TRADING_NAME} team will respond within one
             business day.
