@@ -30,6 +30,10 @@ export const INDEXING_ENABLED = IS_PRODUCTION && envBool("NEXT_PUBLIC_INDEXING_E
 /** Official production site URL. Do not hard-code a staging URL as the final canonical. */
 export const OFFICIAL_SITE_URL = env("NEXT_PUBLIC_OFFICIAL_SITE_URL") ?? "https://aolaccountants.co.za";
 
+/** Secure client portal (separate application and subdomain; no shared cookies with this site). */
+export const PORTAL_URL = (env("NEXT_PUBLIC_PORTAL_URL") ?? "https://portal.aolaccountants.co.za").replace(/\/+$/, "");
+export const PORTAL_LOGIN_URL = `${PORTAL_URL}/login`;
+
 /** Staging / preview URL (Netlify or other). Not used as production canonical. */
 export const PREVIEW_SITE_URL = env("NEXT_PUBLIC_PREVIEW_SITE_URL") ?? "https://aol-accounting-academy.netlify.app";
 

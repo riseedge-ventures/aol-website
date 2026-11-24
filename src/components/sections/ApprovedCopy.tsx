@@ -17,7 +17,6 @@ export function ApprovedCopy({ content, firstHeading = "h2" }: {
   firstHeading?: "h1" | "h2" | "h3";
 }) {
   const hasPageHeading = content[0]?.kind === "heading" && content[1]?.kind === "heading";
-  let headingSeen = hasPageHeading;
   return <div className="prose">
     {hasPageHeading && <SectionHeading as={firstHeading} eyebrow={content[0].text} title={content[1].text} />}
     {content.map((block, i) => {
@@ -30,8 +29,9 @@ export function ApprovedCopy({ content, firstHeading = "h2" }: {
         : <Button key={label} href="/services/" variant="outline">{label}</Button>
     )}</div>;
     if (block.kind === "heading") {
-      const Tag = headingSeen ? "h3" : firstHeading;
-      headingSeen = true;
+      const firstContentIndex = hasPageHeading ? 2 : 0;
+      const hasEarlierHeading = hasPageHeading || content.slice(firstContentIndex, i).some((item) => item.kind === "heading");
+      const Tag = hasEarlierHeading ? "h3" : firstHeading;
       return <Tag key={i} className="page-subheading"><CopyText block={block} /></Tag>;
     }
     if (block.kind === "bullet") {

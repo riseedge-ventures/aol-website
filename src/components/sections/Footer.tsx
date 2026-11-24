@@ -9,6 +9,7 @@ OFFICE_EMAIL,
 PHONE_DISPLAY,
 PHONE_HREF,
 PHYSICAL_ADDRESS,
+PORTAL_LOGIN_URL,
 publicSocialLinks,
 SUPPORTING_DOCUMENTS_STATEMENT,
 TRADING_NAME,
@@ -57,6 +58,9 @@ export function Footer() {
                   <Link href={href}>{label}</Link>
                 </li>
               ))}
+              <li>
+                <a href={PORTAL_LOGIN_URL}>Client Portal</a>
+              </li>
             </ul>
           </nav>
 

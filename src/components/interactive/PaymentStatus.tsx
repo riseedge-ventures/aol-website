@@ -1,28 +1,32 @@
 "use client";
 
 import { PHONE_DISPLAY, PHONE_HREF, WHATSAPP_URL } from "@/config/site";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "../ui/Button";
 import { Icon } from "../ui/Icon";
 
 type Status = "checking" | "paid" | "pending" | "error";
 
+function subscribeToLocationChange(callback: () => void) {
+  window.addEventListener("popstate", callback);
+  return () => window.removeEventListener("popstate", callback);
+}
+
+function paymentReference() {
+  const query = new URLSearchParams(window.location.search);
+  return query.get("reference") || query.get("trxref") || "";
+}
+
 export function PaymentStatus() {
   const [status, setStatus] = useState<Status>("checking");
   const [purpose, setPurpose] = useState("");
-  const [reference, setReference] = useState("");
+  const reference = useSyncExternalStore(subscribeToLocationChange, paymentReference, () => "");
 
   useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    const ref = query.get("reference") || query.get("trxref") || "";
-    setReference(ref);
-    if (!ref) {
-      setStatus("error");
-      return;
-    }
+    if (!reference) return;
 
     const controller = new AbortController();
-    fetch(`/.netlify/functions/paystack-verify?reference=${encodeURIComponent(ref)}`, {
+    fetch(`/.netlify/functions/paystack-verify?reference=${encodeURIComponent(reference)}`, {
       headers: { Accept: "application/json" },
       signal: controller.signal,
     })
@@ -37,21 +41,22 @@ export function PaymentStatus() {
         if (error?.name !== "AbortError") setStatus("error");
       });
     return () => controller.abort();
-  }, []);
+  }, [reference]);
 
   const isSubscription = purpose === "monthly_subscription";
+  const visibleStatus: Status = reference ? status : "error";
 
   return (
-    <div className={`payment-result payment-result--${status}`} aria-live="polite">
+    <div className={`payment-result payment-result--${visibleStatus}`} aria-live="polite">
       <span className="payment-result__icon" aria-hidden="true">
-        <Icon name={status === "paid" ? "check" : status === "checking" ? "loader-circle" : "shield-alert"} size={30} />
+        <Icon name={visibleStatus === "paid" ? "check" : visibleStatus === "checking" ? "loader-circle" : "shield-alert"} size={30} />
       </span>
-      {status === "checking" ? (
+      {visibleStatus === "checking" ? (
         <>
           <h1>Confirming your payment</h1>
           <p>Please wait while we securely verify the payment with Paystack.</p>
         </>
-      ) : status === "paid" ? (
+      ) : visibleStatus === "paid" ? (
         <>
           <h1>Payment received</h1>
           <p>
@@ -61,7 +66,7 @@ export function PaymentStatus() {
           </p>
           <p><strong>Payment reference:</strong> {reference}</p>
         </>
-      ) : status === "pending" ? (
+      ) : visibleStatus === "pending" ? (
         <>
           <h1>Payment is still processing</h1>
           <p>Your appointment is not confirmed yet. AOL Accountants will confirm it after Paystack reports a successful payment.</p>

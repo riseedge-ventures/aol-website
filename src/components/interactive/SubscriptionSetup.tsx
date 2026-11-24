@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState, useSyncExternalStore } from "react";
 import { Button } from "../ui/Button";
 import { Icon } from "../ui/Icon";
 
@@ -37,18 +37,25 @@ function money(cents: number) {
   return new Intl.NumberFormat("en-ZA", { style: "currency", currency: "ZAR" }).format(cents / 100);
 }
 
+function subscribeToLocationChange(callback: () => void) {
+  window.addEventListener("popstate", callback);
+  return () => window.removeEventListener("popstate", callback);
+}
+
+function invitationFromUrl() {
+  return new URLSearchParams(window.location.search).get("invite") || "";
+}
+
 export function SubscriptionSetup() {
-  const [invite, setInvite] = useState("");
+  const invitation = useSyncExternalStore(subscribeToLocationChange, invitationFromUrl, () => "");
+  const [inviteOverride, setInviteOverride] = useState<string | null>(null);
+  const invite = inviteOverride ?? invitation;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [config, setConfig] = useState<Config | null>(null);
   const [loading, setLoading] = useState(false);
   const [scriptReady, setScriptReady] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    setInvite(new URLSearchParams(window.location.search).get("invite") || "");
-  }, []);
 
   const prepare = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -118,7 +125,7 @@ export function SubscriptionSetup() {
           <label htmlFor="billing-email">Email Address</label>
           <input id="billing-email" value={email} onChange={(event) => setEmail(event.target.value)} required type="email" autoComplete="email" />
           <label htmlFor="billing-invite">Private Invitation Code</label>
-          <input id="billing-invite" value={invite} onChange={(event) => setInvite(event.target.value)} required autoComplete="off" />
+          <input id="billing-invite" value={invite} onChange={(event) => setInviteOverride(event.target.value)} required autoComplete="off" />
           <Button type="submit" block size="lg" disabled={loading}>{loading ? "Checking…" : "Continue Securely"}</Button>
         </form>
       ) : (

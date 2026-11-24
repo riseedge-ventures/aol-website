@@ -18,7 +18,7 @@ const TRACKED_EVENTS = new Set([
   "subscription.expiring_cards",
 ]);
 
-export default async (request) => {
+const handler = async (request) => {
   if (request.method !== "POST") return json(405, { ok: false });
   const rawBody = await request.text();
   const signingSecret = process.env.PAYSTACK_WEBHOOK_SECRET || "";
@@ -67,4 +67,6 @@ export default async (request) => {
 
   return json(200, { ok: true });
 };
+
+export default handler;
 

@@ -1,6 +1,6 @@
 import { OFFICE_CONSULTATION_AMOUNT_CENTS, cleanText, json, paystack } from "./_shared/paystack.mjs";
 
-export default async (request) => {
+const handler = async (request) => {
   if (request.method !== "GET") return json(405, { ok: false, message: "Method not allowed." });
   const reference = cleanText(new URL(request.url).searchParams.get("reference"), 120);
   if (!/^[A-Za-z0-9._=-]{6,120}$/.test(reference)) {
@@ -38,4 +38,6 @@ export default async (request) => {
     });
   }
 };
+
+export default handler;
 

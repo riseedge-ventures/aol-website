@@ -1310,3 +1310,17 @@ body:has(.modal.open) .mab { visibility: hidden; pointer-events: none; }
 .trust-company__inner strong { color: var(--navy-900); }
 .ftr__reg { font-size: var(--text-sm); color: var(--text-on-navy-faint); margin: 0; line-height: 1.45; }
 
+/* Client Portal entry point (separate secure application). */
+.hdr .hdr__portal { display: none; }
+.drawer__link--portal { color: var(--brand-primary); }
+.drawer__portal-label { display: inline-flex; align-items: center; gap: .55rem; }
+/* At narrower desktop widths the consultation CTA needs the available header space. */
+@media (min-width: 1024px) {
+  .hdr .hdr__portal { display: inline-flex; padding-inline: .6rem; }
+  .hdr .hdr__portal-text { display: none; }
+}
+@media (min-width: 1280px) {
+  .hdr .hdr__portal { padding-inline: revert-layer; }
+  .hdr .hdr__portal-text { display: inline; }
+}
+
