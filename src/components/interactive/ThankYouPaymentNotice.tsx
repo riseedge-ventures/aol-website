@@ -1,12 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+function subscribeToLocationChange(callback: () => void) {
+  window.addEventListener("popstate", callback);
+  return () => window.removeEventListener("popstate", callback);
+}
+
+function paymentIsPending() {
+  return new URLSearchParams(window.location.search).get("payment") === "pending";
+}
 
 export function ThankYouPaymentNotice() {
-  const [pending, setPending] = useState(false);
-  useEffect(() => {
-    setPending(new URLSearchParams(window.location.search).get("payment") === "pending");
-  }, []);
+  const pending = useSyncExternalStore(subscribeToLocationChange, paymentIsPending, () => false);
   if (!pending) return null;
   return (
     <div className="payment-fallback-notice" role="status">

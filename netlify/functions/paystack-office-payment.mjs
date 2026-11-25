@@ -9,7 +9,7 @@ import {
   validEmail,
 } from "./_shared/paystack.mjs";
 
-export default async (request) => {
+const handler = async (request) => {
   if (request.method !== "POST") return json(405, { ok: false, message: "Method not allowed." });
   if (!requestOriginAllowed(request)) return json(403, { ok: false, message: "Request origin is not allowed." });
 
@@ -69,4 +69,6 @@ export default async (request) => {
     });
   }
 };
+
+export default handler;
 
