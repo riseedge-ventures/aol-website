@@ -58,9 +58,11 @@ export function Footer() {
                   <Link href={href}>{label}</Link>
                 </li>
               ))}
-              <li>
-                <a href={PORTAL_LOGIN_URL}>Client Portal</a>
-              </li>
+              {PORTAL_LOGIN_URL ? (
+                <li>
+                  <a href={PORTAL_LOGIN_URL}>Client Portal</a>
+                </li>
+              ) : null}
             </ul>
           </nav>
 

@@ -103,17 +103,19 @@ export function Header() {
             ))}
           </nav>
           <div className="hdr__actions">
-            <Button
-              className="hdr__portal"
-              variant="outline"
-              size="sm"
-              iconLeft="shield-check"
-              href={PORTAL_LOGIN_URL}
-              aria-label="Client Portal"
-              title="Client Portal"
-            >
-              <span className="hdr__portal-text">Client Portal</span>
-            </Button>
+            {PORTAL_LOGIN_URL ? (
+              <Button
+                className="hdr__portal"
+                variant="outline"
+                size="sm"
+                iconLeft="shield-check"
+                href={PORTAL_LOGIN_URL}
+                aria-label="Client Portal"
+                title="Client Portal"
+              >
+                <span className="hdr__portal-text">Client Portal</span>
+              </Button>
+            ) : null}
             <Button className="hdr__cta" size="sm" iconRight="arrow-right" onClick={onBook}>
               Book a Free Online Consultation
             </Button>
@@ -157,13 +159,15 @@ export function Header() {
               <Icon name="chevron-right" size={18} />
             </Link>
           ))}
-          <a className="drawer__link drawer__link--portal" href={PORTAL_LOGIN_URL} onClick={closeMenu}>
-            <span className="drawer__portal-label">
-              <Icon name="shield-check" size={18} />
-              Client Portal
-            </span>
-            <Icon name="chevron-right" size={18} />
-          </a>
+          {PORTAL_LOGIN_URL ? (
+            <a className="drawer__link drawer__link--portal" href={PORTAL_LOGIN_URL} onClick={closeMenu}>
+              <span className="drawer__portal-label">
+                <Icon name="shield-check" size={18} />
+                Client Portal
+              </span>
+              <Icon name="chevron-right" size={18} />
+            </a>
+          ) : null}
           <div className="drawer__cta">
             <Button block iconRight="arrow-right" onClick={onBook}>
               Book a Free Online Consultation
